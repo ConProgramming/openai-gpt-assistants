@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../src/index.ts"],
+  "sourcesContent": ["import { OpenAI } from \"openai\";\n\nimport { Cache } from \"./cache.js\";\nexport * from \"./assistant.js\";\nexport * from \"./cache.js\";\nexport * from \"./message.js\";\nexport * from \"./run.js\";\nexport * from \"./thread.js\";\n\ntype GlobalRequestOptions = Exclude<\n  OpenAI.RequestOptions,\n  \"method\" | \"body\" | \"query\" | \"path\"\n>;\n\nexport class Context {\n  cache: Cache;\n  constructor(\n    public readonly client: OpenAI,\n    public requestOptions: GlobalRequestOptions = {},\n  ) {\n    this.cache = new Cache(this);\n  }\n\n  _opts(options: OpenAI.RequestOptions): OpenAI.RequestOptions {\n    const opts = {\n      ...this.requestOptions,\n      ...options,\n    };\n    for (const key in opts) {\n      const casted = key as keyof typeof opts;\n      if (opts[casted] === undefined) {\n        delete opts[casted];\n      }\n    }\n    return opts;\n  }\n}\n"],
+  "mappings": "AAEA,SAAS,aAAa;AACtB,cAAc;AACd,cAAc;AACd,cAAc;AACd,cAAc;AACd,cAAc;AAOP,MAAM,QAAQ;AAAA,EAEnB,YACkB,QACT,iBAAuC,CAAC,GAC/C;AAFgB;AACT;AAEP,SAAK,QAAQ,IAAI,MAAM,IAAI;AAAA,EAC7B;AAAA,EANA;AAAA,EAQA,MAAM,SAAuD;AAC3D,UAAM,OAAO;AAAA,MACX,GAAG,KAAK;AAAA,MACR,GAAG;AAAA,IACL;AACA,eAAW,OAAO,MAAM;AACtB,YAAM,SAAS;AACf,UAAI,KAAK,MAAM,MAAM,QAAW;AAC9B,eAAO,KAAK,MAAM;AAAA,MACpB;AAAA,IACF;AACA,WAAO;AAAA,EACT;AACF;",
+  "names": []
+}
